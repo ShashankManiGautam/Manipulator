@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    
+    <gazebo reference="link3" >
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+    <gazebo reference="link1" >
+        <material>Gazebo/Yellow</material>
+    </gazebo>
+    
+    <ros2_control name="GazeboSimSystem" type="system" >
+
+        <hardware>
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        
+        <joint name="joint1" >
+            <command_interface name="position" >
+                <param name="min">-3.14</param>
+                <param name="max">3.14</param>
+            </command_interface>
+            <state_interface name="position" >
+                <param name="initial_value" >0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+        </joint>
+
+        <joint name="joint2" >
+            <command_interface name="position" />
+            <state_interface name="position" >
+                <param name="initial_value" >0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+        </joint>
+    
+    </ros2_control>
+
+    <!-- Gazebo -->
+    <gazebo>
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            <parameters>$(find dynamixel_manipulator)/config/controller_config.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+</robot>

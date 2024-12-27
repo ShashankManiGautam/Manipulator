@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <xacro:property name="base_radius" value="0.15" />
+    <xacro:property name="base_height" value="0.1" />
+    <xacro:property name="link1_length" value="0.05" />
+    <xacro:property name="link1_width" value="0.1" />
+    <xacro:property name="link1_height" value="0.6" />
+    <xacro:property name="link2_length" value="0.04" />
+    <xacro:property name="link2_width" value="0.04" />
+    <xacro:property name="link2_height" value="0.4" />
+    <xacro:property name="link3_length" value="0.01" />
+    <xacro:property name="link3_width" value="0.2" />
+    <xacro:property name="link3_height" value="0.03" />
+
+    <link name="floor" />
+
+    <link name="base_link" >
+        <visual>
+            <geometry>
+                <cylinder radius="${base_radius}" length="${base_height}" />
+            </geometry>
+            <origin xyz="0 0 ${base_height / 2.0 }" rpy="0 0 0"/>
+            <material name="orange" />
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${base_radius}" length="${base_height}" />
+            </geometry>
+            <origin xyz="0 0 ${base_height / 2.0 }" rpy="0 0 0"/>
+            <material name="orange" />
+        </collision>
+        <xacro:cylinder_inertia m="2" r="${base_radius}" h="${base_height}" 
+                           xyz="0 0 ${base_height/ 2.0 }" rpy="0 0 0"   />
+    </link>
+    <link name="link1" >
+        <visual>
+            <geometry>
+                <box size="${link1_length} ${link1_width} ${link1_height}" />
+            </geometry>
+            <origin xyz="0 0 ${link1_height / 2.0}" rpy="0 0 0"/>
+            <material name="yellow" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${link1_length} ${link1_width} ${link1_height}" />
+            </geometry>
+            <origin xyz="0 0 ${link1_height / 2.0}" rpy="0 0 0"/>
+            <material name="yellow" />
+        </collision>
+        <xacro:box_inertia m="0.5" l="${link1_length}" b="${link1_width}" h="${link1_height}" 
+                           xyz="0 0 ${link1_height / 2.0}" rpy="0 0 0"   />
+    </link>
+
+    <link name="link2" >
+        <visual>
+            <geometry>
+                <box size="${link2_length} ${link2_width} ${link2_height}" />
+            </geometry>
+            <origin xyz="0 0 ${link2_height / 2.0}" rpy="0 0 0"/>
+            <material name="blue" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${link2_length} ${link2_width} ${link2_height}" />
+            </geometry>
+            <origin xyz="0 0 ${link2_height / 2.0}" rpy="0 0 0"/>
+            <material name="blue" />
+        </collision>
+        <xacro:box_inertia m="0.3" l="${link2_length}" b="${link2_width}" h="${link2_height}" 
+                           xyz="0 0 ${link2_height / 2.0}" rpy="0 0 0"   />
+    </link>
+
+    <link name="link3" >
+        <visual>
+            <geometry>
+                <box size="${link3_length} ${link3_width} ${link3_height}" />
+            </geometry>
+            <origin xyz="0 0 ${link3_height / 2.0}" rpy="0 0 0"/>
+            <material name="red" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${link3_length} ${link3_width} ${link3_height}" />
+            </geometry>
+            <origin xyz="0 0 ${link3_height / 2.0}" rpy="0 0 0"/>
+            <material name="red" />
+        </collision>
+        <xacro:box_inertia m="0.3" l="${link3_length}" b="${link3_width}" h="${link3_height}" 
+                           xyz="0 0 ${link3_height / 2.0}" rpy="0 0 0"   />
+    </link>
+
+    <joint name="floor_base" type="fixed" >
+        <parent link="floor" />
+        <child link="base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <joint name="joint1" type="revolute" >
+        <parent link="base_link" />
+        <child link="link1" />
+        <origin xyz="0 0 ${base_height / 2.0}" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+        <limit lower="${-pi}" upper="${pi}" effort="100.0" velocity="100.0"/>
+        <dynamics damping="0.1" friction="0.05"/>
+    </joint>
+
+    <joint name="joint2" type="revolute" >
+        <parent link="link1" />
+        <child link="link2" />
+        <origin xyz="0 0 ${link1_height}" rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit lower="${-pi}" upper="${pi}" effort="100.0" velocity="100.0"/>
+        <dynamics damping="0.1" friction="0.05"/>
+    </joint>
+
+    <joint name="joint3" type="fixed" >
+        <parent link="link2" />
+        <child link="link3" />
+        <origin xyz="0 0 ${link2_height}" rpy="0 0 0" />
+    </joint>
+
+</robot>

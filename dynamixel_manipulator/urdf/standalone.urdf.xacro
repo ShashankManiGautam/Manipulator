@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot name="manipulator_bot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <xacro:include filename="common_properties.xacro" />
+
+    <xacro:include filename="manipulator.xacro" />
+
+    <!-- if true then launch display.launch.xml and then controller.launch.py -->
+    <!-- if false then launch hardware_controller.launch.py -->
+
+    <xacro:property name="is_sim" value="false" />
+
+    <xacro:if value="${is_sim}" >
+        <xacro:include filename="ros2_controller_gazebo.xacro" />
+    </xacro:if>
+
+    <xacro:unless value="${is_sim}" >
+        <xacro:include filename="ros2_controller.xacro" />
+    </xacro:unless>
+
+
+</robot>
